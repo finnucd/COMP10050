@@ -24,3 +24,4 @@ void end_twitter()  {
     printf("Exiting the twitter system...\n");
     exit(0);
 }
+this is a test

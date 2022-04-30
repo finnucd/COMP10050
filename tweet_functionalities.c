@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-
 void post_tweet(twitter *twitter_system,new_tweet_PTR *headPtr, int current_user)    {
     //TODO: Conditionals
         //what happens if message length is over max length?

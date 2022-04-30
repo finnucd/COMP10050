@@ -39,15 +39,19 @@ int main() {
                     break;
                 case 4:
                     get_news_feed(&twitter_system, &headPtr, current_user);
+                    getc(stdin);
                     break;
                 case 5:
                     current_user++;
+                    getc(stdin);
                     break;
                 case 6:
                     current_user--;
+                    getc(stdin);
                     break;
                 case 7:
                     is_following(&twitter_system, current_user);
+                    getc(stdin);
                     break;
                 case 8:
                     for(int i = 0; i < twitter_system.num_users; i++)   {
@@ -64,6 +68,7 @@ int main() {
                         printf("There are no users in the system.\n");
                         end_twitter();
                     }
+                    getc(stdin);
                     break;
                 //default:
                     //TODO: default statment is executed if only 1 user is entered and follow() returning --> getchar fixes this

@@ -11,7 +11,6 @@ void follow(twitter *twitter_system, int current_user)    {
     else if(twitter_system->num_users == 1) {
         printf("User \"%s\" is the only user in the system.\nAdd at least one more user to follow someone\nReturning to menu...\n",
                twitter_system->users[current_user].username);
-        getchar();
         return;
     }
     else    {
@@ -117,7 +116,7 @@ int unfollow_user_validity_check(twitter *twitter_system, char *checkUser, int c
 char *get_user_input(int size)   {
 
     char *user_choice_container = malloc(size);
-    //getchar();
+    //7ar();
     fgetc(stdin); //get leftover newline character for fgets to work
     fgets(user_choice_container, size, stdin);
     //make sure null terminating character is added; fgets could add newline if its read

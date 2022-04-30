@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 void display_menu(twitter *twitter_system, int current_user)  {
+    //printf("current user is: %s", twitter_system->users[current_user].username);
     printf("Current user is: %s\n", twitter_system->users[current_user].username);
 
     printf("Press 1 to follow another user\n"
@@ -16,6 +17,7 @@ void display_menu(twitter *twitter_system, int current_user)  {
 int get_menu_input()    {
     char *num_char = malloc(2);
     fgets(num_char, 2, stdin);
+    //getc(stdin);
     char *ptr;
     int input = strtol(num_char, &ptr, 10);
     return input;
@@ -24,4 +26,3 @@ void end_twitter()  {
     printf("Exiting the twitter system...\n");
     exit(0);
 }
-this is a test

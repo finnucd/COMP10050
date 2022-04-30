@@ -38,6 +38,7 @@ void post_tweet(twitter *twitter_system,new_tweet_PTR *headPtr, int current_user
     }
 }
 void get_news_feed(twitter *twitter_system, new_tweet_PTR *headPtr, int current_user) {
+    printf("das");
     if(twitter_system->num_tweets == 0) {
         printf("No tweets have been posted yet.\nReturning to menu...\n");
         return;
@@ -62,4 +63,57 @@ void get_news_feed(twitter *twitter_system, new_tweet_PTR *headPtr, int current_
             traverse = traverse->next_tweet;
         }
     }
+}
+void delete_tweets(new_tweet_PTR *headPtr, char *deleted_user)  {
+    new_tweet_PTR prev = NULL;
+    new_tweet_PTR curr = *headPtr;
+    new_tweet_PTR test = *headPtr;
+
+    printf("Before deletion:\n");
+    while(test != NULL) {
+        printf("\"%s\" %s-->", test->tweet.user, test->tweet.msg);
+        test = test->next_tweet;
+    }
+    printf("\n");
+    while((curr != NULL) ) {   //strcmp(curr->tweet.user, deleted_user) == 0
+
+        if(curr != NULL && strcmp(curr->tweet.user, deleted_user) == 0) {
+            if(strcmp((*headPtr)->tweet.user, deleted_user) == 0) {
+                printf("1  ");
+                new_tweet_PTR temp = *headPtr;
+                printf("1  ");
+                (*headPtr) = (*headPtr)->next_tweet;
+                printf("1  ");
+                free(temp);
+                printf("1  ");
+                curr = *headPtr;
+                printf("1  ");
+            }
+            else    {
+                printf("3 ");
+                new_tweet_PTR temp = curr;
+                printf("3 ");
+                prev->next_tweet = curr->next_tweet;
+                printf("3 ");
+                curr = curr->next_tweet;
+                printf("3 ");
+                free(temp);
+                printf("3 ");
+            }
+        }
+        else if(curr != NULL)   {
+            printf("2  ");
+            prev = curr;
+            printf("2  ");
+            curr = curr->next_tweet;
+            printf("2  ");
+        }
+    }
+    test = *headPtr;
+    printf("After deletion:\n");
+    while(test != NULL) {
+        printf("\"%s\" %s-->", test->tweet.user, test->tweet.msg);
+        test = test->next_tweet;
+    }
+    printf("\n");
 }

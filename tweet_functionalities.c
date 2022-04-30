@@ -77,7 +77,7 @@ void delete_tweets(new_tweet_PTR *headPtr, char *deleted_user)  {
     printf("\n");
     while((curr != NULL) ) {   //strcmp(curr->tweet.user, deleted_user) == 0
 
-        if(curr != NULL && strcmp(curr->tweet.user, deleted_user) == 0) {
+        if(strcmp(curr->tweet.user, deleted_user) == 0) {
             if(strcmp((*headPtr)->tweet.user, deleted_user) == 0) {
                 printf("1  ");
                 new_tweet_PTR temp = *headPtr;
@@ -101,7 +101,7 @@ void delete_tweets(new_tweet_PTR *headPtr, char *deleted_user)  {
                 printf("3 ");
             }
         }
-        else if(curr != NULL)   {
+        else   {
             printf("2  ");
             prev = curr;
             printf("2  ");

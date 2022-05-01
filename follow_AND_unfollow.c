@@ -86,7 +86,6 @@ void is_not_following(twitter *twitter_system, int user) {
 }
 void is_following(twitter *twitter_system, int user)    {
     for(size_t i = 0; i < twitter_system->users[user].num_following; i++)   {
-
         printf("--> %s\n", twitter_system->users[user].following[i]);
     }
 }
@@ -94,7 +93,7 @@ void is_following(twitter *twitter_system, int user)    {
 next to the twitter_system struct, it takes the username whose existence is checked
 */
 int is_valid(twitter *twitter_system, char *checkString)   {
-    for(size_t i = 0; i < MAX_FOLLOWING; i++)   {//loop through number of following of current user to see if there is a match with any of the users
+    for(size_t i = 0; i < twitter_system->num_users; i++)   {//loop through number of following of current user to see if there is a match with any of the users
         if(strcmp(twitter_system->users[i].username, checkString) == 0) {
             //return 0 to indicate a match was found
             return 0;

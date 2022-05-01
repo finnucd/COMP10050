@@ -37,6 +37,8 @@
     } twitter;
 
     void create_twitter_system(twitter * twitter_system);
+    int does_exist(twitter *twitter_system, char * check);
+    void remove_newLine(twitter *twitter_system, int current);
 #endif //ASSIGNMENT_2___PROJECT_DIRECTORY_TWITTER_CREATE_H
 
 

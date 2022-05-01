@@ -21,8 +21,9 @@ void post_tweet(twitter *twitter_system,new_tweet_PTR *headPtr, int current_user
             newTweetNode->tweet.id = twitter_system->num_tweets;
             //copy tweet inputted by user
             strcpy(newTweetNode->tweet.msg, get_user_input(TWEET_LENGTH));
-            //set username
+            //set username of tweet
             strcpy(newTweetNode->tweet.user, twitter_system->users[current_user].username);
+            //increment number of tweets of given user
             twitter_system->users[current_user].num_tweets++;
             //new node points to null
             newTweetNode->next_tweet = NULL;
@@ -47,7 +48,7 @@ void get_news_feed(twitter *twitter_system, new_tweet_PTR *headPtr, int current_
         //tweet_counter counts number of tweets user or users user follows have been found
         int tweet_counter = 0;
         int following_index;
-        while(traverse != NULL && tweet_counter < 11)    {
+        while(traverse != NULL && tweet_counter < 10)    {
             //store resulting index if author of current tweet matches one of the usernames the current user is following
             following_index = unfollow_user_validity_check(twitter_system, traverse->tweet.user, current_user);
             //condition specifies whether current tweet is either authored by user him/herself or by any of the users he/she is following

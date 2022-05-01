@@ -3,7 +3,7 @@
 #include <stdlib.h>
 void display_menu(twitter *twitter_system, int current_user)  {
     //printf("current user is: %s", twitter_system->users[current_user].username);
-    printf("Current user is: %s\n", twitter_system->users[current_user].username);
+    printf("\nCurrent user is: %s\n", twitter_system->users[current_user].username);
 
     printf("Press 1 to follow another user\n"
            "Press 2 to unfollow another user\n"

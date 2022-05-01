@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdlib.h>
 void create_twitter_system(twitter * twitter_system)    {
-    //TODO: Does user already exist?
     twitter_system->num_users = 0;
     twitter_system->num_tweets = 0;
 
@@ -11,9 +10,6 @@ void create_twitter_system(twitter * twitter_system)    {
         printf("Input the Username of user %i or press \"x\" to terminate\n", i+1);
         fgets(twitter_system->users[i].username, USR_LENGTH, stdin);
         remove_newLine(twitter_system, i);
-        if(twitter_system->users[i].username[strlen(twitter_system->users[i].username)-1] == '\n') { //make sure null terminating character is added; fgets could add newline if its read
-            twitter_system->users[i].username[strlen(twitter_system->users[i].username)-1] = '\0';
-        }
 
         while((does_exist(twitter_system, twitter_system->users[i].username) == 1) && (strcmp(twitter_system->users[i].username, "x") != 0))   {
             printf("The username does already exist. Please try again\n");

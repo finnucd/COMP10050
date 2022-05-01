@@ -16,7 +16,6 @@ int main() {
         user usr = twitter_system.users[i];
         printf("User: %s; Followers: %d; Following: %d\n",usr.username, usr.num_followers, usr.num_followers );
     }
-    printf("\n");
     new_tweet_PTR headPtr = NULL;
 
     //display menu with possibilities
@@ -50,13 +49,8 @@ int main() {
                     is_following(&twitter_system, current_user);
                     break;
                 case 8:
-                    for(int i = 0; i < twitter_system.num_users; i++)   {
-                        printf("index %i: BEFORE deletion: %s\n", i, twitter_system.users[i].username);
-                    }
                     delete_account(&twitter_system, current_user, &headPtr);
                     //revert to user who came before deleted user
-                    printf("Num user before: %i", twitter_system.num_users);
-
                     if(current_user != 0) {
                         current_user--;
                     }
@@ -65,7 +59,9 @@ int main() {
                         end_twitter();
                     }
                     break;
-                //default:
+                default:
+                    end_twitter();
+                    break;
                     //TODO: default statment is executed if only 1 user is entered and follow() returning --> getchar fixes this
                     //
                     //break;

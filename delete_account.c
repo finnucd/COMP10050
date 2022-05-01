@@ -6,19 +6,14 @@
 void delete_account(twitter *twitter_system, int current_user, new_tweet_PTR *headPtr)   {
     //set username to 0
     delete_from_following(twitter_system, twitter_system->users[current_user].username);
-    printf("1");
-    printf("2");
     if(twitter_system->users[current_user].num_tweets > 0)    {
-        printf("error?");
         delete_tweets(headPtr, twitter_system->users[current_user].username);
     }
     delete_from_total(twitter_system, current_user);
-    printf("3");
     //delete tweets if user to be deleted has posted any
 
-    printf("5");
+
     //strcpy(twitter_system->users[current_user].username, "\0");
-    printf("6");
 }
 
 void delete_from_following(twitter  *twitter_system, char *user)    {
@@ -45,6 +40,6 @@ void delete_from_total(twitter *twitter_system, int delete_index)    {
     for(int i = delete_index; i < twitter_system->num_users-1; i++)   {
         twitter_system->users[i] = twitter_system->users[i+1];
     }
-    printf("\nuser now is: %s %i\n\n", twitter_system->users[delete_index].username, delete_index);
+    printf("User deleted\n");
     twitter_system->num_users--;
 }

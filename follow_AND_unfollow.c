@@ -13,15 +13,19 @@ void follow(twitter *twitter_system, int current_user)    {
                twitter_system->users[current_user].username);
         return;
     }
+    else if(twitter_system->users[current_user].num_following + 1 == twitter_system->num_users) {
+        printf("User \"%s\" already follows all users in the system\nReturning to menu...\n",twitter_system->users[current_user].username);
+        return;
+    }
     else    {
         printf("%s does not follow:\n", twitter_system->users[current_user].username);
         is_not_following(twitter_system, current_user);
-        printf("Please input the name of the user you want to follow:\n");
     }
     //give user choice to decide which user he/she wants to follow and store in variable
     //make code below conditional upon there being more than 1 user in the system
     printf("Please enter username of user you want to follow.\n");
     char *user_choice_follow = get_user_input(USR_LENGTH);
+    printf("%s\n", user_choice_follow);
     //make sure user cannot follow him or herself
     //make sure username provided is valid, meaning corresponding to an existing user and is not the username of the current user
     while(is_valid(twitter_system, user_choice_follow) == 1)   {//TODO: check here is user typed himself in!
@@ -116,7 +120,7 @@ char *get_user_input(int size)   {
 
     char *user_choice_container = malloc(size);
     //7ar();
-    fgetc(stdin); //get leftover newline character for fgets to work
+    //fgetc(stdin); //get leftover newline character for fgets to work
     fgets(user_choice_container, size, stdin);
     //make sure null terminating character is added; fgets could add newline if its read
     if(user_choice_container[strlen(user_choice_container)-1] == '\n') {

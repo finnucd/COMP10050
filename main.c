@@ -16,6 +16,7 @@ int main() {
         user usr = twitter_system.users[i];
         printf("User: %s; Followers: %d; Following: %d\n",usr.username, usr.num_followers, usr.num_followers );
     }
+    //headPtr for linked list representing news feed
     new_tweet_PTR headPtr = NULL;
 
     //display menu with possibilities

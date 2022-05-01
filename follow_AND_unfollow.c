@@ -13,8 +13,8 @@ void follow(twitter *twitter_system, int current_user)    {
                twitter_system->users[current_user].username);
         return;
     }
-    else if(twitter_system->users[current_user].num_following + 1 == twitter_system->num_users) {
-        printf("User \"%s\" already follows all users in the system\nReturning to menu...\n",twitter_system->users[current_user].username);
+    else if((twitter_system->users[current_user].num_following + 1) == twitter_system->num_users) {
+        printf("User \"%s\" already follows all other users in the system\nReturning to menu...\n",twitter_system->users[current_user].username);
         return;
     }
     else    {
@@ -22,23 +22,27 @@ void follow(twitter *twitter_system, int current_user)    {
         is_not_following(twitter_system, current_user);
     }
     //give user choice to decide which user he/she wants to follow and store in variable
-    //make code below conditional upon there being more than 1 user in the system
     printf("Please enter username of user you want to follow.\n");
+
     char *user_choice_follow = get_user_input(USR_LENGTH);
-    printf("%s\n", user_choice_follow);
-    //make sure user cannot follow him or herself
+
     //make sure username provided is valid, meaning corresponding to an existing user and is not the username of the current user
-    while(is_valid(twitter_system, user_choice_follow) == 1)   {//TODO: check here is user typed himself in!
+    while(is_valid(twitter_system, user_choice_follow, current_user) != 0)   {
         //prompt user until valid username is provided
-        printf("username: \"%s\"does not exist. Please enter a valid username\n", user_choice_follow);
         user_choice_follow = get_user_input(USR_LENGTH);
     }
-    //if username entered exists: add to followers
-    int next_slot = twitter_system->users[current_user].num_following;
-    strcpy(twitter_system->users[current_user].following[next_slot], user_choice_follow);
+    //if username entered exists and is not username of current user: add to followers
+    //store position in array of following to be filled in variable for readability
+    int following_index = twitter_system->users[current_user].num_following;
+    strcpy(twitter_system->users[current_user].following[following_index], user_choice_follow);
     //increment num following of current user
     twitter_system->users[current_user].num_following++;
-    printf("%s now follows %s\n", twitter_system->users[current_user].username, twitter_system->users[current_user].following[next_slot]);
+    //update followers of user the current user just followed
+    update_followers(twitter_system, current_user, twitter_system->users[current_user].following[following_index]);
+
+    printf("=====================\n");
+    //printf("%s now follows %s\n",twitter_system->users[current_user].username, twitter_system->users[current_user].following[next_slot]);
+    printf("=====================\n");
 }
 void unfollow(twitter *twitter_system, int current_user)  {
     if(twitter_system->users[current_user].num_following == 0)  {
@@ -54,7 +58,7 @@ void unfollow(twitter *twitter_system, int current_user)  {
             printf("The username you entered does not match any username of the users you currently follow.\nPlease enter a valid username.\n");
             user_choice_following = get_user_input(USR_LENGTH);
         }
-        size_t index = unfollow_user_validity_check(twitter_system, user_choice_following, current_user);
+        int index = unfollow_user_validity_check(twitter_system, user_choice_following, current_user);
         //set string of matching user to null == unfollowing user
         strcpy(twitter_system->users[current_user].following[index], "\0");
         //decrement num following of current user
@@ -94,17 +98,25 @@ void is_following(twitter *twitter_system, int user)    {
     }
 }
 /*is_valid takes checks whether a given username exists in the system
-next to the twitter_system struct, it takes the username whose existence is checked
+next to the twitter_system struct, it takes the username whose existence is checked and t
 */
-int is_valid(twitter *twitter_system, char *checkString)   {
+int is_valid(twitter *twitter_system, char *checkString, int current_user)   {
     for(size_t i = 0; i < twitter_system->num_users; i++)   {//loop through number of following of current user to see if there is a match with any of the users
+        //it a match was found, determine whether user wants to a) follow him or herself; b) username is indeed valid
         if(strcmp(twitter_system->users[i].username, checkString) == 0) {
-            //return 0 to indicate a match was found
-            return 0;
+            //
+            if(strcmp(twitter_system->users[current_user].username,checkString) == 0)   {
+                printf("You cannot follow yourself.\nTry again!\n");
+                return 1;
+            }
+            else   {
+                return 0;
+            }
         }
     }
     //return 1 in case username does not exist
-    return 1;
+    printf("username: \"%s\"does not exist. Please enter a valid username\n", checkString);
+    return 2;
 }
 int unfollow_user_validity_check(twitter *twitter_system, char *checkUser, int current_user)    {
     for(int i = 0; i < twitter_system->users[current_user].num_following; i++)   {
@@ -127,4 +139,19 @@ char *get_user_input(int size)   {
         user_choice_container[strlen(user_choice_container)-1] = '\0';
     }
     return user_choice_container;
+}
+void update_followers(twitter *twitter_system, int current_user, char *userCheck) {
+    //search for user
+    for (int i = 0; i < twitter_system->num_users; i++) {
+
+        if (strcmp(twitter_system->users[i].username, userCheck) == 0) {
+            printf("no");
+            strcpy(twitter_system->users[i].followers[twitter_system->users[i].num_followers],
+                   twitter_system->users[current_user].username);
+            twitter_system->users[i].num_followers++;
+        }
+    }
+    for(int i = 0; i < 2; i++)  {
+        printf("User: %s Follower %s num followers: %i\n", twitter_system->users[i].username,  twitter_system->users[i].followers[0o],  twitter_system->users[i].num_followers);
+    }
 }

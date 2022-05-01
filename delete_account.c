@@ -11,8 +11,6 @@ void delete_account(twitter *twitter_system, int current_user, new_tweet_PTR *he
     }
     delete_from_total(twitter_system, current_user);
     //delete tweets if user to be deleted has posted any
-
-
     //strcpy(twitter_system->users[current_user].username, "\0");
 }
 

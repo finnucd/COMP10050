@@ -38,7 +38,6 @@ void post_tweet(twitter *twitter_system,new_tweet_PTR *headPtr, int current_user
     }
 }
 void get_news_feed(twitter *twitter_system, new_tweet_PTR *headPtr, int current_user) {
-    printf("das");
     if(twitter_system->num_tweets == 0) {
         printf("No tweets have been posted yet.\nReturning to menu...\n");
         return;
@@ -56,6 +55,7 @@ void get_news_feed(twitter *twitter_system, new_tweet_PTR *headPtr, int current_
                 //print tweet & author
                 printf("User: %s\n", traverse->tweet.user);
                 printf("Tweet:\n%s\n",traverse->tweet.msg);
+                printf("__________________________________________________________\n");
                 //increment tweet_counter
                 tweet_counter++;
             }

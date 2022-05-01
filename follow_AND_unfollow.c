@@ -107,7 +107,7 @@ int is_valid(twitter *twitter_system, char *checkString)   {
     return 1;
 }
 int unfollow_user_validity_check(twitter *twitter_system, char *checkUser, int current_user)    {
-    for(size_t i = 0; i < twitter_system->users[current_user].num_following; i++)   {
+    for(int i = 0; i < twitter_system->users[current_user].num_following; i++)   {
         if(strcmp(twitter_system->users[current_user].following[i], checkUser) == 0)    {
             //if match is found return index of user
             return i;

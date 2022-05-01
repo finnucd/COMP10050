@@ -30,7 +30,7 @@
     }user;
 
     typedef struct twitter  {
-        tweet news_feed[MAX_TWEETS];
+        tweet news_feed[MAX_TWEETS]; //delete
         user users[MAX_USERS];
         int num_tweets;
         int num_users;

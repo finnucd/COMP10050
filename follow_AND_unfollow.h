@@ -10,7 +10,8 @@
     void unfollow(twitter *twitter_system, int user);
     int unfollow_user_validity_check(twitter *twitter_system, char *checkUser, int current_user);
     char* get_user_input(int size);
-    void update_followers(twitter *twitter_system, int current_user, char *user);
+    int add_to_followers(twitter *twitter_system, int current_user, char *user);
+
 #endif //ASSIGNMENT_2___PROJECT_DIRECTORY_FOLLOW_AND_UNFOLLOW_H
 
 

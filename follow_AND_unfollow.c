@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "follow_AND_unfollow.h"
+#include "delete_account.h"
 #include <stdlib.h>
 
 void follow(twitter *twitter_system, int current_user)    {
@@ -38,18 +39,23 @@ void follow(twitter *twitter_system, int current_user)    {
     //increment num following of current user
     twitter_system->users[current_user].num_following++;
     //update followers of user the current user just followed
-    update_followers(twitter_system, current_user, twitter_system->users[current_user].following[following_index]);
-
-    printf("=====================\n");
-    //printf("%s now follows %s\n",twitter_system->users[current_user].username, twitter_system->users[current_user].following[next_slot]);
-    printf("=====================\n");
+    if(add_to_followers(twitter_system, current_user, twitter_system->users[current_user].following[following_index]) == 0) {
+        printf("=====================\n");
+        printf("%s now follows %s\n",twitter_system->users[current_user].username, twitter_system->users[current_user].following[following_index]);
+        printf("=====================\n");
+    }
+    else    {
+        printf("This user has already reached the maximum number of followers.\nReturning to menu...\n");
+    }
 }
 void unfollow(twitter *twitter_system, int current_user)  {
     if(twitter_system->users[current_user].num_following == 0)  {
-        printf("%s does not follow any users.\n");
+        printf("%s does not follow any users.\nReturning to menu...\n");
         return;
     }
     else    {
+        //print list of all users current user is following
+        is_following(twitter_system, current_user);
         //prompt user to provide name of person they wnat to unfollow
         printf("Please provide the username of the user you want to unfollow\n");
         char *user_choice_following = get_user_input(USR_LENGTH);
@@ -59,17 +65,10 @@ void unfollow(twitter *twitter_system, int current_user)  {
             user_choice_following = get_user_input(USR_LENGTH);
         }
         int index = unfollow_user_validity_check(twitter_system, user_choice_following, current_user);
-        //set string of matching user to null == unfollowing user
-        strcpy(twitter_system->users[current_user].following[index], "\0");
+        //remove username from followers
+        find_user_follower(twitter_system, current_user, index);
         //decrement num following of current user
         twitter_system->users[current_user].num_following--;
-    }
-
-    if(twitter_system->users[current_user].num_following == 0)  {
-        printf("user is following no one");
-    }
-    else    {
-        is_following(twitter_system, current_user);
     }
 }
 void is_not_following(twitter *twitter_system, int user) {
@@ -93,8 +92,18 @@ void is_not_following(twitter *twitter_system, int user) {
     }
 }
 void is_following(twitter *twitter_system, int user)    {
+    if(twitter_system->users[user].num_following == 0)  {
+        printf("User currently does not follow anyone\n");
+        //6return;
+    }
     for(size_t i = 0; i < twitter_system->users[user].num_following; i++)   {
         printf("--> %s\n", twitter_system->users[user].following[i]);
+    }
+    for(int i = 0; i < twitter_system->num_users; i++)  {
+        for(int j = 0; j < twitter_system->users[i].num_followers; j++) {
+            printf("User: %s  Follower %i: %s\n", twitter_system->users[i].username, j, twitter_system->users[i].followers[j]);
+        }
+        printf("\n");
     }
 }
 /*is_valid takes checks whether a given username exists in the system
@@ -140,18 +149,24 @@ char *get_user_input(int size)   {
     }
     return user_choice_container;
 }
-void update_followers(twitter *twitter_system, int current_user, char *userCheck) {
+int add_to_followers(twitter *twitter_system, int current_user, char *userCheck) {
     //search for user
     for (int i = 0; i < twitter_system->num_users; i++) {
 
         if (strcmp(twitter_system->users[i].username, userCheck) == 0) {
-            printf("no");
-            strcpy(twitter_system->users[i].followers[twitter_system->users[i].num_followers],
-                   twitter_system->users[current_user].username);
-            twitter_system->users[i].num_followers++;
+            if(twitter_system->users[i].num_followers < MAX_FOLLOWERS)    {
+                //if number of followers is smaller than Max followers: add user to followers
+                strcpy(twitter_system->users[i].followers[twitter_system->users[i].num_followers],twitter_system->users[current_user].username);
+                twitter_system->users[i].num_followers++;
+                return 0;
+            }
+            else    {
+                //if number of followers already at max: return 1
+                return 1;
+            }
         }
     }
     for(int i = 0; i < 2; i++)  {
-        printf("User: %s Follower %s num followers: %i\n", twitter_system->users[i].username,  twitter_system->users[i].followers[0o],  twitter_system->users[i].num_followers);
+        printf("User: %s Follower %s num followers: %i\n", twitter_system->users[i].username,  twitter_system->users[i].followers[0],  twitter_system->users[i].num_followers);
     }
 }

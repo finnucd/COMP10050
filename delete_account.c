@@ -6,14 +6,14 @@
 void delete_account(twitter *twitter_system, int delete_user, new_tweet_PTR *headPtr)   {
     //find all users who follow the user to be deleted and delete that user from the list of following
     //loop that and repeat for followers alike
-    char yo[USR_LENGTH];
-    strcpy(yo,  twitter_system->users[delete_user].username);
     for(int i = 0; i < twitter_system->num_users; i++)  {
         //get index
         //unfollow
-        int a = unfollow_user_validity_check(twitter_system, yo, i);
+        printf("index = %i\n", i);
+        printf("Check user username is: %s, i´s following 0 is: %s\n", twitter_system->users[delete_user].username, twitter_system->users[i].followers[0]);
+        int a = unfollow_user_validity_check(twitter_system, twitter_system->users[i].username, delete_user);
         printf("check is: %i\n", a);
-        find_user_follower(twitter_system,a, delete_user);
+        find_user_follower(twitter_system, delete_user,a);
         find_user_following(twitter_system, twitter_system->users[delete_user].username, i);
     }
     //if user to be deleted has posted any tweets: delete them

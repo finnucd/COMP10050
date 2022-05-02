@@ -41,7 +41,12 @@ int main() {
                     get_news_feed(&twitter_system, &headPtr, current_user);
                     break;
                 case 5:
-                    current_user++;
+                    if(current_user + 1 <= twitter_system.num_users)    {
+                        current_user++;
+                    }
+                    else    {
+                        printf("This is the  last user.\n");
+                    }
                     break;
                 case 6:
                     current_user--;

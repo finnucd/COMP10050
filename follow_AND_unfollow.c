@@ -58,21 +58,19 @@ void unfollow(twitter *twitter_system, int current_user)  {
         is_following(twitter_system, current_user);
         //prompt user to provide name of person they wnat to unfollow
         printf("Please provide the username of the user you want to unfollow\n");
-        char *user_choice_following = get_user_input(USR_LENGTH);
+        char *user_choice_unfollow = get_user_input(USR_LENGTH);
         //re-prompt user in case user does not follow any other user with the entered username
-        while(unfollow_user_validity_check(twitter_system, user_choice_following, current_user) == -1)  {
+        while(unfollow_user_validity_check(twitter_system, user_choice_unfollow, current_user) == -1)  {
             printf("The username you entered does not match any username of the users you currently follow.\nPlease enter a valid username.\n");
-            user_choice_following = get_user_input(USR_LENGTH);
+            user_choice_unfollow = get_user_input(USR_LENGTH);
         }
-        int index = unfollow_user_validity_check(twitter_system, user_choice_following, current_user);
+        //save index of user in following of current user in variable index
+        int index = unfollow_user_validity_check(twitter_system, user_choice_unfollow, current_user);
         find_user_follower(twitter_system, current_user, index);
         //remove username from following
         find_user_following(twitter_system, twitter_system->users[current_user].following[index], current_user);
         //remove username from followers
-
-
         //decrement num following of current user
-        //twitter_system->users[current_user].num_following--;
     }
 }
 void is_not_following(twitter *twitter_system, int user) {
@@ -104,6 +102,7 @@ void is_following(twitter *twitter_system, int user)    {
     for(size_t i = 0; i < twitter_system->users[user].num_following; i++)   {
         printf("--> %s\n", twitter_system->users[user].following[i]);
     }
+    printf("Followers:\n");
     for(int i = 0; i < twitter_system->num_users; i++)  {
         for(int j = 0; j < twitter_system->users[i].num_followers; j++) {
             printf("User: %s  Follower %i: %s\n", twitter_system->users[i].username, j, twitter_system->users[i].followers[j]);
@@ -171,7 +170,5 @@ int add_to_followers(twitter *twitter_system, int current_user, char *userCheck)
             }
         }
     }
-    for(int i = 0; i < 2; i++)  {
-        printf("User: %s Follower %s num followers: %i\n", twitter_system->users[i].username,  twitter_system->users[i].followers[0],  twitter_system->users[i].num_followers);
-    }
+    printf("add to followers failed\n");
 }

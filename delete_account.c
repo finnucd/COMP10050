@@ -5,7 +5,10 @@
 
 void delete_account(twitter *twitter_system, int current_user, new_tweet_PTR *headPtr)   {
     //find all users who follow the user to be deleted and delete that user from the list of following
-    find_user_following(twitter_system, twitter_system->users[current_user].username);
+    //loop that and repeat for followers alike
+    for(int i = 0; i < twitter_system->num_users; i++)  {
+        find_user_following(twitter_system, twitter_system->users[current_user].username, i);
+    }
     //if user to be deleted has posted any tweets: delete them
     if(twitter_system->users[current_user].num_tweets > 0)    {
         delete_tweets(headPtr, twitter_system->users[current_user].username);
@@ -14,30 +17,21 @@ void delete_account(twitter *twitter_system, int current_user, new_tweet_PTR *he
     delete_from_total(twitter_system, current_user);
 }
 
-void find_user_following(twitter  *twitter_system, char *user)    {
-    for(size_t i = 0; i < twitter_system->num_users; i++)   {
-        for(size_t j = 0; j < twitter_system->users[i].num_following; j++)  {
-            if(strcmp(user, twitter_system->users[i].following[j]) == 0)    {
-
-                remove_from_following(twitter_system, twitter_system->users[i].num_following, i, j);
+void find_user_following(twitter *twitter_system, char *user, int current_user)    {
+        for(size_t j = 0; j < twitter_system->users[current_user].num_following; j++)  {
+            if(strcmp(user, twitter_system->users[current_user].following[j]) == 0)    {
+                remove_from_following(twitter_system, twitter_system->users[current_user].num_following, current_user, j);
                 //decrement number of following
-                twitter_system->users[i].num_following--;
+                twitter_system->users[current_user].num_following--;
+                break;
             }
         }
-    }
 }
 void remove_from_following(twitter *twitter_system, int size, int user, int del_user_index)  {
     for(int i = del_user_index; i < size; i++) {
         //move all users above user index one position down
         strcpy(twitter_system->users[user].following[i],twitter_system->users[user].following[i+1]);
     }
-}
-void delete_from_total(twitter *twitter_system, int delete_index)    {
-    for(int i = delete_index; i < twitter_system->num_users-1; i++)   {
-        twitter_system->users[i] = twitter_system->users[i+1];
-    }
-    printf("User deleted\n");
-    twitter_system->num_users--;
 }
 void find_user_follower(twitter *twitter_system, int current_user, int unfollow_index)    {
     //search user that current user is unfollowing
@@ -68,4 +62,11 @@ void remove_user_follower(twitter *twitter_system, int size, int user, int index
     }
     //decrement num following for user
     twitter_system->users[user].num_followers--;
+}
+void delete_from_total(twitter *twitter_system, int delete_index)    {
+    for(int i = delete_index; i < twitter_system->num_users-1; i++)   {
+        twitter_system->users[i] = twitter_system->users[i+1];
+    }
+    printf("User deleted\n");
+    twitter_system->num_users--;
 }

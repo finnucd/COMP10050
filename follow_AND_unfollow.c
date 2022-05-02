@@ -65,10 +65,14 @@ void unfollow(twitter *twitter_system, int current_user)  {
             user_choice_following = get_user_input(USR_LENGTH);
         }
         int index = unfollow_user_validity_check(twitter_system, user_choice_following, current_user);
-        //remove username from followers
         find_user_follower(twitter_system, current_user, index);
+        //remove username from following
+        find_user_following(twitter_system, twitter_system->users[current_user].following[index], current_user);
+        //remove username from followers
+
+
         //decrement num following of current user
-        twitter_system->users[current_user].num_following--;
+        //twitter_system->users[current_user].num_following--;
     }
 }
 void is_not_following(twitter *twitter_system, int user) {
@@ -96,6 +100,7 @@ void is_following(twitter *twitter_system, int user)    {
         printf("User currently does not follow anyone\n");
         //6return;
     }
+    printf("user is folllowing:\n");
     for(size_t i = 0; i < twitter_system->users[user].num_following; i++)   {
         printf("--> %s\n", twitter_system->users[user].following[i]);
     }

@@ -98,10 +98,14 @@ void is_following(twitter *twitter_system, int user)    {
         printf("User currently does not follow anyone\n");
         //6return;
     }
-    printf("user is following:\n");
-    for(size_t i = 0; i < twitter_system->users[user].num_following; i++)   {
-        printf("--> %s\n", twitter_system->users[user].following[i]);
+
+    for(int j = 0; j < twitter_system->num_users; j++)  {
+        printf("user %i is following:\n", j);
+        for(size_t i = 0; i < twitter_system->users[j].num_following; i++)   {
+            printf("--> %s\n", twitter_system->users[j].following[i]);
+        }
     }
+
     printf("Followers:\n");
     for(int i = 0; i < twitter_system->num_users; i++)  {
         for(int j = 0; j < twitter_system->users[i].num_followers; j++) {
@@ -133,16 +137,6 @@ int is_valid(twitter *twitter_system, char *checkString, int current_user)   {
 }
 int unfollow_user_validity_check(twitter *twitter_system, char *checkUser, int current_user)    {
     for(int i = 0; i < twitter_system->users[current_user].num_following; i++)   {
-        printf("checkuser:\n");
-        for(int k = 0; k < 10; k++) {
-            printf("%c ",checkUser[k]);
-        }
-        printf("\n");
-        printf("Current_user:\n");
-        for(int k = 0; k < 10; k++) {
-            printf("%c ",twitter_system->users[current_user].following[i][k]);
-        }
-        printf("\n");
         if(strcmp(twitter_system->users[current_user].following[i], checkUser) == 0)    {
             //if match is found return index of user
             return i;

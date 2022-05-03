@@ -33,7 +33,7 @@ void post_tweet(twitter *twitter_system,new_tweet_PTR *headPtr, int current_user
             *headPtr = currentPtr;
         }
         else    {
-            printf("There is no memory available to store the new node\n");
+            printf("There is no memory available to store the new tweet\n");
         }
     }
 }
@@ -62,6 +62,7 @@ void get_news_feed(twitter *twitter_system, new_tweet_PTR *headPtr, int current_
             //move to next tweet
             traverse = traverse->next_tweet;
         }
+        printf("__________________________________________________________\n");
     }
 }
 void delete_tweets(new_tweet_PTR *headPtr, char *deleted_user)  {

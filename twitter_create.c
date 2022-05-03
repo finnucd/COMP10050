@@ -18,7 +18,7 @@ void create_twitter_system(twitter * twitter_system)    {
         }
 
         if(strcmp(twitter_system->users[i].username, "x") == 0) {
-            //strcpy(twitter_system->users[i].username, "\0");
+            strcpy(twitter_system->users[i].username, "\0");
             break;
         }
         //set number of followers to 0

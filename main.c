@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 #include "twitter_create.h"
 #include "follow_AND_unfollow.h"
 #include "menu_functionalities.h"
@@ -8,8 +7,6 @@
 int main() {
 
     twitter twitter_system;
-    // function checks whether username is already used?
-    //TODO: while loop encapsulating "create twitter system" prompting user as long as at least one user is entered
     create_twitter_system(&twitter_system);
 
     for(int i = 0; i < twitter_system.num_users; i++)   {
@@ -26,7 +23,9 @@ int main() {
     while(user_choice != -1 && twitter_system.num_users >= 1) {
         if (current_user <= twitter_system.num_users) {
             display_menu(&twitter_system, current_user);
+            //save user input in variable user_choice and use it to control switch statement
             user_choice = get_menu_input();
+
             switch (user_choice) {
                 case 1:
                     follow(&twitter_system, current_user);
@@ -41,7 +40,8 @@ int main() {
                     get_news_feed(&twitter_system, &headPtr, current_user);
                     break;
                 case 5:
-                    if(current_user + 1 <= twitter_system.num_users)    {
+                    //as long as current_user is smaller than total num users: switch to next user
+                    if(current_user + 1 < twitter_system.num_users)    {
                         current_user++;
                     }
                     else    {
@@ -55,11 +55,13 @@ int main() {
                     is_following(&twitter_system, current_user);
                     break;
                 case 8:
+                    //delete user
                     delete_account(&twitter_system, current_user, &headPtr);
                     //revert to user who came before deleted user
                     if(current_user != 0) {
                         current_user--;
                     }
+                    //if user deleted was last user in system: end program
                     if(twitter_system.num_users == 0)    {
                         printf("There are no users in the system.\n");
                         end_twitter();
@@ -68,9 +70,6 @@ int main() {
                 default:
                     end_twitter();
                     break;
-                    //TODO: default statment is executed if only 1 user is entered and follow() returning --> getchar fixes this
-                    //
-                    //break;
             }
         }
     }

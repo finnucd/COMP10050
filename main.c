@@ -15,9 +15,6 @@ int main() {
     }
     //headPtr for linked list representing news feed
     new_tweet_PTR headPtr = NULL;
-
-    //display menu with possibilities
-    //give user possibility to select a given user // ask liliane
     int user_choice = 0;
     int current_user = 0;
     while(user_choice != -1 && twitter_system.num_users >= 1) {
@@ -73,8 +70,5 @@ int main() {
             }
         }
     }
-
-    //follow(&twitter_system, current_user);
-    //unfollow(&twitter_system, current_user);
     return 0;
 }

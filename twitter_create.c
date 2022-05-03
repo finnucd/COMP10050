@@ -8,15 +8,17 @@ void create_twitter_system(twitter * twitter_system)    {
 
     for(int i = 0; i < MAX_USERS; i++)   {
         printf("Input the Username of user %i or press \"x\" to terminate\n", i+1);
+        //read in username
         fgets(twitter_system->users[i].username, USR_LENGTH, stdin);
+        //remove potential newline character
         remove_newLine(twitter_system, i);
-
+        //if username entered already exists: prompt user until username entered is not already in system
         while((does_exist(twitter_system, twitter_system->users[i].username) == 1) && (strcmp(twitter_system->users[i].username, "x") != 0))   {
             printf("The username does already exist. Please try again\n");
             fgets(twitter_system->users[i].username, USR_LENGTH, stdin);
             remove_newLine(twitter_system, i);
         }
-
+        //if user enters x, program stops creating users
         if(strcmp(twitter_system->users[i].username, "x") == 0) {
             strcpy(twitter_system->users[i].username, "\0");
             break;
@@ -32,6 +34,7 @@ void create_twitter_system(twitter * twitter_system)    {
     }
     printf("Twitter created!\n");
 }
+//function "does exist" returns one if username entered is already in the system
 int does_exist(twitter *twitter_system, char * checkUser)   {
     for(int i =  0; i  < twitter_system->num_users; i++)    {
         if(strcmp(twitter_system->users[i].username, checkUser) == 0)    {
@@ -40,6 +43,7 @@ int does_exist(twitter *twitter_system, char * checkUser)   {
     }
     return 0;
 }
+//removes potential newline character
 void remove_newLine(twitter *twitter_system, int current_user)    {
     if(twitter_system->users[current_user].username[strlen(twitter_system->users[current_user].username)-1] == '\n') { //make sure null terminating character is added; fgets could add newline if its read
         twitter_system->users[current_user].username[strlen(twitter_system->users[current_user].username)-1] = '\0';

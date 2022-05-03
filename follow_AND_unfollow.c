@@ -5,9 +5,11 @@
 #include <stdlib.h>
 
 void follow(twitter *twitter_system, int current_user)    {
-    //display users user currently does not follow
+
     if(twitter_system->users[current_user].num_following == MAX_FOLLOWING)   {
-        printf("User %s already follows the max number of other users. You need to unfollow another user to follow a new user!\n",twitter_system->users[current_user].username);
+        printf("User \"%s\" already follows the max number of other users. You need to unfollow another user to follow a new user!\n"
+               "Returning to menu...\n",twitter_system->users[current_user].username);
+        return;
     }
     else if(twitter_system->num_users == 1) {
         printf("User \"%s\" is the only user in the system.\nAdd at least one more user to follow someone\nReturning to menu...\n",
@@ -18,27 +20,27 @@ void follow(twitter *twitter_system, int current_user)    {
         printf("User \"%s\" already follows all other users in the system\nReturning to menu...\n",twitter_system->users[current_user].username);
         return;
     }
-    else    {
+    else    {//display users user currently does not follow
         printf("%s does not follow:\n", twitter_system->users[current_user].username);
         is_not_following(twitter_system, current_user);
     }
-    //give user choice to decide which user he/she wants to follow and store in variable
-    printf("Please enter username of user you want to follow.\n");
 
+    printf("Please enter username of user you want to follow.\n");
+    //give user choice to decide which user he/she wants to follow and store in variable "user_choice_follow"
     char *user_choice_follow = get_user_input(USR_LENGTH);
 
-    //make sure username provided is valid, meaning corresponding to an existing user and is not the username of the current user
+    //prompt user until username provided is valid, meaning corresponding to an existing user and is not the username of the current user
     while(is_valid(twitter_system, user_choice_follow, current_user) != 0)   {
-        //prompt user until valid username is provided
         user_choice_follow = get_user_input(USR_LENGTH);
     }
-    //if username entered exists and is not username of current user: add to followers
-    //store position in array of following to be filled in variable for readability
+    //if username entered exists and is not username of current user: add current user to followers of user current user now follows
+    //store index of user current user wants to follow in following_index (used later to add current user to followers of user current user wants to follow)
     int following_index = twitter_system->users[current_user].num_following;
+    //store user current user wants to follow in following of current user
     strcpy(twitter_system->users[current_user].following[following_index], user_choice_follow);
     //increment num following of current user
     twitter_system->users[current_user].num_following++;
-    //update followers of user the current user just followed
+    //update followers of user the current user just followed IF not max number of followers have been reached
     if(add_to_followers(twitter_system, current_user, twitter_system->users[current_user].following[following_index]) == 0) {
         printf("=====================\n");
         printf("%s now follows %s\n",twitter_system->users[current_user].username, twitter_system->users[current_user].following[following_index]);

@@ -4,19 +4,19 @@
 #include <stdlib.h>
 
 void post_tweet(twitter *twitter_system,new_tweet_PTR *headPtr, int current_user)    {
-    //TODO: Conditionals
-        //what happens if message length is over max length?
+
     if(twitter_system->num_tweets == MAX_TWEETS)    {
         printf("The maximum number of tweets (100) has been reached!\nReturning to menu...\n");
         return;
     }
     else    {
+        //allocate memory for new tweet
         new_tweet_PTR newTweetNode = malloc(sizeof(new_tweet));
         new_tweet_PTR currentPtr;
         printf("Type away, %s!\n",twitter_system->users[current_user].username);
-
+        //if memory was successfully allocated: add new tweet
         if(newTweetNode != NULL)    {
-            //set tweet ide
+            //set tweet ID
             twitter_system->num_tweets++;
             newTweetNode->tweet.id = twitter_system->num_tweets;
             //copy tweet inputted by user
@@ -28,12 +28,14 @@ void post_tweet(twitter *twitter_system,new_tweet_PTR *headPtr, int current_user
             //new node points to null
             newTweetNode->next_tweet = NULL;
 
+            //set new tweet as head pointer
             currentPtr = newTweetNode;
             currentPtr->next_tweet = *headPtr;
             *headPtr = currentPtr;
         }
         else    {
             printf("There is no memory available to store the new tweet\n");
+            return;
         }
     }
 }
@@ -65,56 +67,32 @@ void get_news_feed(twitter *twitter_system, new_tweet_PTR *headPtr, int current_
         printf("__________________________________________________________\n");
     }
 }
+//function "delete tweets" deletes tweets of user who has been deleted
 void delete_tweets(new_tweet_PTR *headPtr, char *deleted_user)  {
     new_tweet_PTR prev = NULL;
     new_tweet_PTR curr = *headPtr;
-    new_tweet_PTR test = *headPtr;
 
-    printf("Before deletion:\n");
-    while(test != NULL) {
-        printf("\"%s\" %s-->", test->tweet.user, test->tweet.msg);
-        test = test->next_tweet;
-    }
-    printf("\n");
-    while((curr != NULL) ) {   //strcmp(curr->tweet.user, deleted_user) == 0
+    while((curr != NULL) ) {
 
         if(strcmp(curr->tweet.user, deleted_user) == 0) {
+            //if tweet authored by deleted user is the head pointer: delete tweet and set new head pointer
             if(strcmp((*headPtr)->tweet.user, deleted_user) == 0) {
-                printf("1  ");
                 new_tweet_PTR temp = *headPtr;
-                printf("1  ");
                 (*headPtr) = (*headPtr)->next_tweet;
-                printf("1  ");
                 free(temp);
-                printf("1  ");
                 curr = *headPtr;
-                printf("1  ");
             }
             else    {
-                printf("3 ");
+                //delete tweet and relink list
                 new_tweet_PTR temp = curr;
-                printf("3 ");
                 prev->next_tweet = curr->next_tweet;
-                printf("3 ");
                 curr = curr->next_tweet;
-                printf("3 ");
                 free(temp);
-                printf("3 ");
             }
         }
-        else   {
-            printf("2  ");
+        else   {//if tweet wasn't authored by deleted user: continue traversing the list
             prev = curr;
-            printf("2  ");
             curr = curr->next_tweet;
-            printf("2  ");
         }
     }
-    test = *headPtr;
-    printf("After deletion:\n");
-    while(test != NULL) {
-        printf("\"%s\" %s-->", test->tweet.user, test->tweet.msg);
-        test = test->next_tweet;
-    }
-    printf("\n");
 }

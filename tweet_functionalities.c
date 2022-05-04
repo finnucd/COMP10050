@@ -55,8 +55,9 @@ void get_news_feed(twitter *twitter_system, new_tweet_PTR *headPtr, int current_
             //condition specifies whether current tweet is either authored by user him/herself or by any of the users he/she is following
             if(strcmp(traverse->tweet.user,twitter_system->users[current_user].username) == 0 || following_index != -1) {
                 //print tweet & author
+                printf("__________________________________________________________\n");
                 printf("User: %s\n", traverse->tweet.user);
-                printf("Tweet:\n%s\n",traverse->tweet.msg);
+                printf("Tweet:\n\"%s\"\n",traverse->tweet.msg);
                 printf("__________________________________________________________\n");
                 //increment tweet_counter
                 tweet_counter++;
@@ -64,7 +65,7 @@ void get_news_feed(twitter *twitter_system, new_tweet_PTR *headPtr, int current_
             //move to next tweet
             traverse = traverse->next_tweet;
         }
-        printf("__________________________________________________________\n");
+
     }
 }
 //function "delete tweets" deletes tweets of user who has been deleted

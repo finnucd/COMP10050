@@ -48,12 +48,12 @@ void follow(twitter *twitter_system, int current_user)    {
         printf("=====================\n");
     }
     else    {
-        printf("This user has already reached the maximum number of followers.\nReturning to menu...\n");
+        printf("The user you are trying to follow has already reached the maximum number of followers.\nReturning to menu...\n");
     }
 }
 void unfollow(twitter *twitter_system, int current_user)  {
     if(twitter_system->users[current_user].num_following == 0)  {
-        printf("%s does not follow any users.\nReturning to menu...\n");
+        printf("\"%s\" does not follow any users.\nReturning to menu...\n", twitter_system->users[current_user].username);
         return;
     }
     else    {
@@ -76,6 +76,7 @@ void unfollow(twitter *twitter_system, int current_user)  {
         find_user_following(twitter_system, twitter_system->users[current_user].following[index], current_user);
     }
 }
+//"is not following" prints usernames of users "user" is not following
 void is_not_following(twitter *twitter_system, int user) {
 
     int checkInt;
@@ -153,6 +154,7 @@ char *get_user_input(int size)   {
     }
     return user_choice_container;
 }
+//"add_to_followers" adds user who just followed another user (say user x) to followers of user x
 int add_to_followers(twitter *twitter_system, int current_user, char *userCheck) {
     //search for user in twitter system
     for (int i = 0; i < twitter_system->num_users; i++) {
@@ -165,7 +167,7 @@ int add_to_followers(twitter *twitter_system, int current_user, char *userCheck)
                 return 0;
             }
             else    {
-                //if number of followers already at max: return 1
+                //if number of followers of user ialready at max: return 1
                 return 1;
             }
         }

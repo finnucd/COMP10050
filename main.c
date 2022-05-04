@@ -22,7 +22,7 @@ int main() {
             display_menu(&twitter_system, current_user);
             //save user input in variable user_choice and use it to control switch statement
             user_choice = get_menu_input();
-
+            //switch statement uses "user_choice" to select function to be called
             switch (user_choice) {
                 case 1:
                     follow(&twitter_system, current_user);
@@ -46,12 +46,6 @@ int main() {
                     }
                     break;
                 case 6:
-                    current_user--;
-                    break;
-                case 7:
-                    is_following(&twitter_system, current_user);
-                    break;
-                case 8:
                     //delete user
                     delete_account(&twitter_system, current_user, &headPtr);
                     //revert to user who came before deleted user

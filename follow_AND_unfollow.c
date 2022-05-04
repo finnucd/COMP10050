@@ -17,7 +17,8 @@ void follow(twitter *twitter_system, int current_user)    {
         return;
     }
     else if((twitter_system->users[current_user].num_following + 1) == twitter_system->num_users) {
-        printf("User \"%s\" already follows all other users in the system\nReturning to menu...\n",twitter_system->users[current_user].username);
+        printf("User \"%s\" already follows all other users in the system\nReturning to menu...\n",
+               twitter_system->users[current_user].username);
         return;
     }
     else    {//display users user currently does not follow
@@ -58,29 +59,31 @@ void unfollow(twitter *twitter_system, int current_user)  {
     else    {
         //print list of all users current user is following
         is_following(twitter_system, current_user);
-        //prompt user to provide name of person they wnat to unfollow
+        //prompt user to provide name of person they want to unfollow
         printf("Please provide the username of the user you want to unfollow\n");
+        //store username of user current user wants to unfollow in variable user_choice_follow
         char *user_choice_unfollow = get_user_input(USR_LENGTH);
         //re-prompt user in case user does not follow any other user with the entered username
         while(unfollow_user_validity_check(twitter_system, user_choice_unfollow, current_user) == -1)  {
             printf("The username you entered does not match any username of the users you currently follow.\nPlease enter a valid username.\n");
             user_choice_unfollow = get_user_input(USR_LENGTH);
         }
-        //save index of user in following of current user in variable index
+        //save index in following of current user of user current user wants to unfollow in variable "index"
         int index = unfollow_user_validity_check(twitter_system, user_choice_unfollow, current_user);
+        //remove current user from list of followers of user current user is unfollowing
         find_user_follower(twitter_system, current_user, index);
-        //remove username from following
+        //remove username from following of current user
         find_user_following(twitter_system, twitter_system->users[current_user].following[index], current_user);
-        //remove username from followers
-        //decrement num following of current user
     }
 }
 void is_not_following(twitter *twitter_system, int user) {
-    //check int is set to 0 if none of the followers match given user in outer for loop && user not himself
+
     int checkInt;
+    //loop through all users
     for(size_t i = 0; i < twitter_system->num_users; i++)   {
-        //loop through number of following of current user to see if there is a match with any of the users
+
         checkInt = 0;
+        //for each user in the system: loop through number of following of current user to see if there is a match
         for(size_t j = 0; j < twitter_system->users[user].num_following; j++)   {
             //make sure user is not able to  follow him/herself & user does not already follow a given user
             if((strcmp(twitter_system->users[i].username, twitter_system->users[user].following[j]) == 0))
@@ -89,41 +92,31 @@ void is_not_following(twitter *twitter_system, int user) {
                 checkInt = -1;
             }
         }
+        //if user i not in following, print username
         if(checkInt == 0 && strcmp(twitter_system->users[i].username, twitter_system->users[user].username) != 0 )   {
-            //if user i not in following, print username
+
             printf("--> %s\n", twitter_system->users[i].username);
         }
     }
 }
+//is following prints usernames of user(s) current user is following
 void is_following(twitter *twitter_system, int user)    {
     if(twitter_system->users[user].num_following == 0)  {
         printf("User currently does not follow anyone\n");
-        //6return;
+        return;
     }
-
-    for(int j = 0; j < twitter_system->num_users; j++)  {
-        printf("user %i is following:\n", j);
-        for(size_t i = 0; i < twitter_system->users[j].num_following; i++)   {
-            printf("--> %s\n", twitter_system->users[j].following[i]);
-        }
-    }
-
-    printf("Followers:\n");
-    for(int i = 0; i < twitter_system->num_users; i++)  {
-        for(int j = 0; j < twitter_system->users[i].num_followers; j++) {
-            printf("User: %s  Follower %i: %s\n", twitter_system->users[i].username, j, twitter_system->users[i].followers[j]);
-        }
-        printf("\n");
+    printf("User \"%s\" is following:\n", twitter_system->users[user].username);
+    for(size_t i = 0; i < twitter_system->users[user].num_following; i++)   {
+        printf("--> %s\n", twitter_system->users[user].following[i]);
     }
 }
-/*is_valid takes checks whether a given username exists in the system
-next to the twitter_system struct, it takes the username whose existence is checked and t
-*/
+//is_valid takes checks whether a given username already exists in the system
 int is_valid(twitter *twitter_system, char *checkString, int current_user)   {
-    for(size_t i = 0; i < twitter_system->num_users; i++)   {//loop through number of following of current user to see if there is a match with any of the users
-        //it a match was found, determine whether user wants to a) follow him or herself; b) username is indeed valid
+
+    for(size_t i = 0; i < twitter_system->num_users; i++)   {
+
         if(strcmp(twitter_system->users[i].username, checkString) == 0) {
-            //
+            //if the current user tries to follow him/herself: print message and return error code to follow
             if(strcmp(twitter_system->users[current_user].username,checkString) == 0)   {
                 printf("You cannot follow yourself.\nTry again!\n");
                 return 1;
@@ -133,10 +126,12 @@ int is_valid(twitter *twitter_system, char *checkString, int current_user)   {
             }
         }
     }
-    //return 1 in case username does not exist
+    //return 1 in case username entered does not exist
     printf("username: \"%s\"does not exist. Please enter a valid username\n", checkString);
-    return 2;
+    return 1;
 }
+//unfollow_user_validity_check compares the current users´s followers against a string
+//and returns index in user following if match is found
 int unfollow_user_validity_check(twitter *twitter_system, char *checkUser, int current_user)    {
     for(int i = 0; i < twitter_system->users[current_user].num_following; i++)   {
         if(strcmp(twitter_system->users[current_user].following[i], checkUser) == 0)    {
@@ -144,14 +139,13 @@ int unfollow_user_validity_check(twitter *twitter_system, char *checkUser, int c
             return i;
         }
     }
-    //if no match is found, return 1;
+    //if no match is found, return -1;
     return -1;
 }
+//function "get_user_input" gets user input and returns it as a string
 char *get_user_input(int size)   {
 
     char *user_choice_container = malloc(size);
-    //7ar();
-    //fgetc(stdin); //get leftover newline character for fgets to work
     fgets(user_choice_container, size, stdin);
     //make sure null terminating character is added; fgets could add newline if its read
     if(user_choice_container[strlen(user_choice_container)-1] == '\n') {
@@ -160,9 +154,9 @@ char *get_user_input(int size)   {
     return user_choice_container;
 }
 int add_to_followers(twitter *twitter_system, int current_user, char *userCheck) {
-    //search for user
+    //search for user in twitter system
     for (int i = 0; i < twitter_system->num_users; i++) {
-
+        //if user i´s name matches the username of user current_user just followed: add current user to followers of user i
         if (strcmp(twitter_system->users[i].username, userCheck) == 0) {
             if(twitter_system->users[i].num_followers < MAX_FOLLOWERS)    {
                 //if number of followers is smaller than Max followers: add user to followers
@@ -176,5 +170,4 @@ int add_to_followers(twitter *twitter_system, int current_user, char *userCheck)
             }
         }
     }
-    printf("add to followers failed\n");
 }

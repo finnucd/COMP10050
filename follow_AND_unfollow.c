@@ -74,6 +74,7 @@ void unfollow(twitter *twitter_system, int current_user)  {
         find_user_follower(twitter_system, current_user, index);
         //remove username from following of current user
         find_user_following(twitter_system, twitter_system->users[current_user].following[index], current_user);
+        printf("\"%s\" has unfollowed: \"%s\"\n", twitter_system->users[current_user].username, user_choice_unfollow);
     }
 }
 //"is not following" prints usernames of users "user" is not following

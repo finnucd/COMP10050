@@ -1,7 +1,6 @@
 #include "twitter_create.h"
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 void create_twitter_system(twitter * twitter_system)    {
     twitter_system->num_users = 0;
     twitter_system->num_tweets = 0;

@@ -17,8 +17,9 @@ int main() {
     new_tweet_PTR headPtr = NULL;
     int user_choice = 0;
     int current_user = 0;
-    while(user_choice != -1 && twitter_system.num_users >= 1) {
-        if (current_user <= twitter_system.num_users) {
+
+    while(twitter_system.num_users >= 1) {
+        if (current_user < twitter_system.num_users) {
             display_menu(&twitter_system, current_user);
             //save user input in variable user_choice and use it to control switch statement
             user_choice = get_menu_input();
